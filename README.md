@@ -20,10 +20,40 @@ else count <= count;                // holds present value
 
 ## Design / RTL Program
 
+module up_counter (
+    input  wire       clk,    // clock
+    input  wire       rst,    // asynchronous active-high reset
+    input  wire       en,     // count enable
+    output reg  [3:0] count   // 4-bit count output
+);
+    always @(posedge clk or posedge rst) begin
+        if (rst)
+            count <= 4'b0000;
+        else if (en)
+            count <= count + 1'b1;   // increment, wraps 1111 -> 0000
+        else
+            count <= count;          // hold
+    end
+endmodule
 
 
 ## Testbench Program
 
+module up_counter (
+    input  wire       clk,    // clock
+    input  wire       rst,    // asynchronous active-high reset
+    input  wire       en,     // count enable
+    output reg  [3:0] count   // 4-bit count output
+);
+    always @(posedge clk or posedge rst) begin
+        if (rst)
+            count <= 4'b0000;
+        else if (en)
+            count <= count + 1'b1;   // increment, wraps 1111 -> 0000
+        else
+            count <= count;          // hold
+    end
+endmodule
 
 
 
@@ -88,6 +118,7 @@ count(next) = count + 1   (when en = 1), wrapping from 1111 to 0000
 The design was compiled and simulated using Synopsys VCS, and the functionality was verified using DVE waveform analysis, matching the expected state transition table.
 
 ## Output
+<img width="1920" height="1080" alt="Screenshot (13)" src="https://github.com/user-attachments/assets/a898bebf-558f-4363-b9bc-449e88fc3ba7" />
 
 
 
